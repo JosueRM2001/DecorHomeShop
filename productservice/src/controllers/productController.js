@@ -1,5 +1,6 @@
 const db = require('../config/db');
 
+// Crear un producto
 exports.createProduct = async (req, res) => {
     const { name, description, price } = req.body;
 
@@ -16,5 +17,16 @@ exports.createProduct = async (req, res) => {
     } catch (err) {
         console.error(err);
         res.status(500).json({ error: 'Failed to create product' });
+    }
+};
+
+// Obtener todos los productos
+exports.getProducts = async (req, res) => {
+    try {
+        const [rows] = await db.query('SELECT * FROM products');
+        res.status(200).json(rows);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Failed to fetch products' });
     }
 };
