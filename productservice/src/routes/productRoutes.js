@@ -1,12 +1,13 @@
-const express = require('express');
-const { createProduct, getProducts } = require('../controllers/productController');
+import { Router } from "express";
 
-const router = express.Router();
+const router = Router();
 
-// Ruta para crear un producto
-router.post('/products', createProduct);
+const products = []; // Array para almacenar los productos temporalmente
 
-// Ruta para obtener productos
-router.get('/products', getProducts);
+// Ruta GET para obtener los productos
+router.get("/api/products", (req, res) => {
+  res.json(products);
+});
 
-module.exports = router;
+// Exportar el router
+export default router;

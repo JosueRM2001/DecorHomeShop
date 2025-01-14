@@ -1,27 +1,34 @@
-require('dotenv').config(); // Carga las variables de entorno del archivo .env
-const express = require('express');
-const productRoutes = require('./routes/productRoutes');
+const express = require("express");
+const bodyParser = require("body-parser");
 
 const app = express();
 
-// Middleware para parsear JSON
-app.use(express.json());
+// Middleware para procesar JSON en las solicitudes
+app.use(bodyParser.json());
 
-// Rutas principales
-app.use('/api/products', productRoutes);
+// Ruta POST para agregar productos
+app.post("/api/products", (req, res) => {
+  const { name, price, description, category } = req.body;
 
-// Ruta base para verificar si el servidor está funcionando
-app.get('/', (req, res) => {
-    res.status(200).send({ message: 'Welcome to the Product Service API!' });
+  // Validación de campos
+  if (!name || !price || !description || !category) {
+    return res.status(400).json({ error: "Todos los campos son obligatorios" });
+  }
+
+  // Simulación de respuesta exitosa
+  res.status(201).json({
+    message: "Producto creado exitosamente",
+    product: { name, price, description, category },
+  });
 });
 
-// Middleware para manejar errores (en caso de rutas no encontradas)
+// Ruta para manejar otras URLs no definidas
 app.use((req, res) => {
-    res.status(404).send({ error: 'Route not found' });
+  res.status(404).json({ error: "Ruta no encontrada" });
 });
 
-// Inicio del servidor
-const PORT = process.env.PORT || 3000;
+// Inicia el servidor en el puerto 3000
+const PORT = 3000;
 app.listen(PORT, () => {
-    console.log(`Server running on http://localhost:${PORT}`);
+  console.log(`Servidor corriendo en el puerto ${PORT}`);
 });
