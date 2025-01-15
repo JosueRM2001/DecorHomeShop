@@ -1,13 +1,11 @@
-const mysql = require('mysql2');
-const dotenv = require('dotenv');
-dotenv.config();
+import mysql from 'mysql2/promise';
 
 const pool = mysql.createPool({
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME,
+  host: 'localhost', // Cambia si usas un host diferente
+  port: 3307,
+  user: 'root', // Tu usuario de MySQL
+  password: '12345678', // Tu contraseña de MySQL
+  database: 'productcatalog', // Nombre de la base de datos
 });
 
-module.exports = pool.promise();
-
+export default pool;

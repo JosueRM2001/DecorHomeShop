@@ -1,34 +1,24 @@
-const express = require("express");
-const bodyParser = require("body-parser");
+import express from 'express';
+import cors from 'cors';
+import productRoutes from './routes/productRoutes.js';
 
 const app = express();
-
-// Middleware para procesar JSON en las solicitudes
-app.use(bodyParser.json());
-
-// Ruta POST para agregar productos
-app.post("/api/products", (req, res) => {
-  const { name, price, description, category } = req.body;
-
-  // Validación de campos
-  if (!name || !price || !description || !category) {
-    return res.status(400).json({ error: "Todos los campos son obligatorios" });
-  }
-
-  // Simulación de respuesta exitosa
-  res.status(201).json({
-    message: "Producto creado exitosamente",
-    product: { name, price, description, category },
-  });
-});
-
-// Ruta para manejar otras URLs no definidas
-app.use((req, res) => {
-  res.status(404).json({ error: "Ruta no encontrada" });
-});
-
-// Inicia el servidor en el puerto 3000
 const PORT = 3000;
+
+// Middlewares
+app.use(cors());
+app.use(express.json());
+
+// Rutas
+app.use('/api', productRoutes);
+
+// Manejo de rutas no encontradas
+app.use((req, res) => {
+  res.status(404).json({ error: 'Ruta no encontrada' });
+});
+
+// Iniciar servidor
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en el puerto ${PORT}`);
 });
+

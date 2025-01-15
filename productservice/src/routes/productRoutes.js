@@ -1,13 +1,19 @@
-import { Router } from "express";
+import express from 'express';
+import {
+  getAllProducts,
+  getProductById,
+  createProduct,
+  updateProduct,
+  deleteProduct,
+} from '../controllers/productController.js';
 
-const router = Router();
+const router = express.Router();
 
-const products = []; // Array para almacenar los productos temporalmente
+router.get('/products', getAllProducts);
+router.get('/products/:id', getProductById);
+router.post('/products', createProduct);
+router.put('/products/:id', updateProduct);
+router.delete('/products/:id', deleteProduct);
 
-// Ruta GET para obtener los productos
-router.get("/api/products", (req, res) => {
-  res.json(products);
-});
-
-// Exportar el router
 export default router;
+
