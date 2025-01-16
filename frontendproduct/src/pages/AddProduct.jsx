@@ -3,7 +3,13 @@ import { Container, TextField, Button, Typography } from '@mui/material';
 import axios from 'axios';
 
 const AddProduct = () => {
-  const [product, setProduct] = useState({ name: '', price: '' });
+  const [product, setProduct] = useState({
+    name: '',
+    price: '',
+    description: '',
+    category: '',
+    image_url: '', 
+  });
 
   const handleChange = (e) => {
     setProduct({ ...product, [e.target.name]: e.target.value });
@@ -11,10 +17,11 @@ const AddProduct = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios.post('http://localhost:3000/api/products', product)
+    axios
+      .post('http://localhost:3000/api/products', product)
       .then(() => {
         alert('Product added successfully!');
-        setProduct({ name: '', price: '' });
+        setProduct({ name: '', price: '', description: '', category: '', image_url: '' });
       })
       .catch((error) => console.error('Error adding product:', error));
   };
@@ -60,6 +67,14 @@ const AddProduct = () => {
           fullWidth
           margin="normal"
           required
+        />
+        <TextField
+          label="Image URL" // Nuevo campo
+          name="image_url"
+          value={product.image_url}
+          onChange={handleChange}
+          fullWidth
+          margin="normal"
         />
         <Button type="submit" variant="contained" color="primary">
           Add Product
