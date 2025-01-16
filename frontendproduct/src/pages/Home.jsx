@@ -1,40 +1,17 @@
-import React, { useEffect, useState } from 'react';
-import { fetchProducts } from '../services/api';
-import ProductCard from '../components/ProductCard';
+import React from 'react';
+import { Container, Typography } from '@mui/material';
 
-function Home() {
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const getProducts = async () => {
-      try {
-        const data = await fetchProducts();
-        setProducts(data);
-      } catch (error) {
-        console.error('Error fetching products:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    getProducts();
-  }, []);
-
+const Home = () => {
   return (
-    <div className="home">
-      <h1>Product Catalog</h1>
-      {loading ? (
-        <p>Loading...</p>
-      ) : (
-        <div className="product-list">
-          {products.map(product => (
-            <ProductCard key={product.id} product={product} />
-          ))}
-        </div>
-      )}
-    </div>
+    <Container>
+      <Typography variant="h3" gutterBottom>
+        Welcome to My Shop
+      </Typography>
+      <Typography variant="body1">
+        Manage your products easily with this app.
+      </Typography>
+    </Container>
   );
-}
+};
 
 export default Home;
