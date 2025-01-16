@@ -43,6 +43,24 @@ const AddProduct = () => {
           margin="normal"
           required
         />
+        <TextField
+          label="Description"
+          name="description"
+          value={product.description}
+          onChange={handleChange}
+          fullWidth
+          margin="normal"
+          required
+        />
+        <TextField
+          label="Category"
+          name="category"
+          value={product.category}
+          onChange={handleChange}
+          fullWidth
+          margin="normal"
+          required
+        />
         <Button type="submit" variant="contained" color="primary">
           Add Product
         </Button>
