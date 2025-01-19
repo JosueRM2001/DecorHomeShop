@@ -4,39 +4,53 @@ import axios from 'axios';
 
 const Products = () => {
   const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    axios.get('http://localhost:3000/api/products')
-      .then((response) => setProducts(response.data))
-      .catch((error) => console.error('Error fetching products:', error));
+    axios.get('http://localhost:3001/api/products')
+      .then((response) => {
+        console.log('Datos recibidos del microservicio:', response.data); // Verifica si llegan los datos
+        setProducts(response.data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error('Error fetching products:', error);
+        alert('Hubo un error al cargar los productos.');
+        setLoading(false);
+      });
   }, []);
 
+  if (loading) {
+    return <Typography variant="h6">Cargando productos...</Typography>;
+  }
+
   return (
-    <Container>
+    <Container sx={{ marginTop: 4 }}>
       <Typography variant="h4" gutterBottom>
         Product List
       </Typography>
       <Grid container spacing={3}>
         {products.map((product) => (
           <Grid item xs={12} sm={6} md={4} key={product.id}>
-            <Card>
-              {/* Mostrar imagen del producto */}
+            <Card sx={{ boxShadow: 3 }}>
               <CardMedia
                 component="img"
                 height="140"
-                image={product.image_url || "https://via.placeholder.com/140"} // Imagen por defecto si no hay URL
+                image={product.image_url || "https://via.placeholder.com/140"}
                 alt={product.name}
               />
               <CardContent>
-                <Typography variant="h6">{product.name}</Typography>
-                <Typography variant="body2">Price: ${product.price}</Typography>
-                {/* Mostrar categoría si existe */}
+                <Typography variant="h6" gutterBottom>
+                  {product.name}
+                </Typography>
+                <Typography variant="body2">
+                  Price: ${product.price}
+                </Typography>
                 {product.category && (
                   <Typography variant="body2" color="textSecondary">
                     Category: {product.category}
                   </Typography>
                 )}
-                {/* Mostrar descripción si existe */}
                 {product.description && (
                   <Typography variant="body2" color="textSecondary">
                     Description: {product.description}
@@ -52,3 +66,4 @@ const Products = () => {
 };
 
 export default Products;
+
