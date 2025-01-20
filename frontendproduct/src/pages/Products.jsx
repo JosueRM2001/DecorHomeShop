@@ -41,7 +41,7 @@ const Products = () => {
                   to={`/update-product/${product.id}`}
                   style={{ marginTop: '10px' }}
                 >
-                  Editar
+                  Edit
                 </Button>
               </CardContent>
             </Card>

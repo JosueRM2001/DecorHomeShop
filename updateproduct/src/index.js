@@ -1,7 +1,9 @@
 import express from 'express';
+import cors from 'cors';
 import productRoutes from './routes/productRoutes.js';
 
 const app = express();
+app.use(cors());
 app.use(express.json()); // Importante para manejar JSON
 
 // Definir las rutas de productos con prefijo /api

@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Container, TextField, Button, Typography } from '@mui/material';
 import axios from 'axios';
+import { TextField, Button, Container, Typography } from '@mui/material';
 
 const UpdateProduct = () => {
-  const { id } = useParams(); // Obtener el ID del producto de la URL
+  const { id } = useParams();
   const navigate = useNavigate();
 
   const [product, setProduct] = useState({
@@ -12,32 +12,40 @@ const UpdateProduct = () => {
     price: '',
     description: '',
     category: '',
-    image_url: '',
+    image_url: ''
   });
 
   useEffect(() => {
-    // Obtener datos del producto a actualizar
-    axios.get(`http://localhost:3001/api/products/${id}`)
-      .then((response) => setProduct(response.data))
-      .catch((error) => console.error('Error al obtener el producto:', error));
+    axios.get(`http://localhost:3002/api/products/${id}`)
+      .then(response => {
+        setProduct(response.data);
+      })
+      .catch(error => {
+        console.error('Error fetching product:', error);
+      });
   }, [id]);
 
   const handleChange = (e) => {
-    setProduct({ ...product, [e.target.name]: e.target.value });
+    setProduct({
+      ...product,
+      [e.target.name]: e.target.value
+    });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    axios.put(`http://localhost:3001/api/products/${id}`, product)
-      .then(() => {
-        alert('Producto actualizado con éxito');
-        navigate('/products'); // Redirige a la lista de productos
-      })
-      .catch((error) => console.error('Error al actualizar el producto:', error));
+    try {
+      await axios.put(`http://localhost:3002/api/products/${id}`, product);
+      alert('Producto actualizado correctamente');
+      navigate('/products');
+    } catch (error) {
+      console.error('Error updating product:', error);
+      alert('Error al actualizar el producto');
+    }
   };
 
   return (
-    <Container>
+    <Container maxWidth="sm">
       <Typography variant="h4" gutterBottom>
         Actualizar Producto
       </Typography>
@@ -86,9 +94,10 @@ const UpdateProduct = () => {
           onChange={handleChange}
           fullWidth
           margin="normal"
+          required
         />
-        <Button type="submit" variant="contained" color="primary">
-          Actualizar Producto
+        <Button type="submit" variant="contained" color="primary" fullWidth>
+          ACTUALIZAR PRODUCTO
         </Button>
       </form>
     </Container>
