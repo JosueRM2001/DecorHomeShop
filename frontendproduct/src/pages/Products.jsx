@@ -1,38 +1,26 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Typography, Grid, Card, CardContent, CardMedia } from '@mui/material';
+import { Link } from 'react-router-dom';
+import { Container, Typography, Grid, Card, CardContent, CardMedia, Button } from '@mui/material';
 import axios from 'axios';
 
 const Products = () => {
   const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     axios.get('http://localhost:3001/api/products')
-      .then((response) => {
-        console.log('Datos recibidos del microservicio:', response.data); // Verifica si llegan los datos
-        setProducts(response.data);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error('Error fetching products:', error);
-        alert('Hubo un error al cargar los productos.');
-        setLoading(false);
-      });
+      .then((response) => setProducts(response.data))
+      .catch((error) => console.error('Error fetching products:', error));
   }, []);
 
-  if (loading) {
-    return <Typography variant="h6">Cargando productos...</Typography>;
-  }
-
   return (
-    <Container sx={{ marginTop: 4 }}>
+    <Container>
       <Typography variant="h4" gutterBottom>
         Product List
       </Typography>
       <Grid container spacing={3}>
         {products.map((product) => (
           <Grid item xs={12} sm={6} md={4} key={product.id}>
-            <Card sx={{ boxShadow: 3 }}>
+            <Card>
               <CardMedia
                 component="img"
                 height="140"
@@ -40,22 +28,21 @@ const Products = () => {
                 alt={product.name}
               />
               <CardContent>
-                <Typography variant="h6" gutterBottom>
-                  {product.name}
-                </Typography>
-                <Typography variant="body2">
-                  Price: ${product.price}
-                </Typography>
-                {product.category && (
-                  <Typography variant="body2" color="textSecondary">
-                    Category: {product.category}
-                  </Typography>
-                )}
-                {product.description && (
-                  <Typography variant="body2" color="textSecondary">
-                    Description: {product.description}
-                  </Typography>
-                )}
+                <Typography variant="h6">{product.name}</Typography>
+                <Typography variant="body2">Price: ${product.price}</Typography>
+                <Typography variant="body2">Category: {product.category}</Typography>
+                <Typography variant="body2">Description: {product.description}</Typography>
+
+                {/* Botón para editar el producto */}
+                <Button
+                  variant="contained"
+                  color="primary"
+                  component={Link}
+                  to={`/update-product/${product.id}`}
+                  style={{ marginTop: '10px' }}
+                >
+                  Editar
+                </Button>
               </CardContent>
             </Card>
           </Grid>
@@ -66,4 +53,5 @@ const Products = () => {
 };
 
 export default Products;
+
 
