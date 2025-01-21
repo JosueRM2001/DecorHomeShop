@@ -36,22 +36,22 @@ const UpdateProduct = () => {
     e.preventDefault();
     try {
       await axios.put(`http://localhost:3002/api/products/${id}`, product);
-      alert('Producto actualizado correctamente');
+      alert('Product updated successfully');
       navigate('/products');
     } catch (error) {
       console.error('Error updating product:', error);
-      alert('Error al actualizar el producto');
+      alert('Error updating the product');
     }
   };
 
   return (
     <Container maxWidth="sm">
       <Typography variant="h4" gutterBottom>
-        Actualizar Producto
+        Update Product
       </Typography>
       <form onSubmit={handleSubmit}>
         <TextField
-          label="Nombre del Producto"
+          label="Product Name"
           name="name"
           value={product.name}
           onChange={handleChange}
@@ -60,7 +60,7 @@ const UpdateProduct = () => {
           required
         />
         <TextField
-          label="Precio"
+          label="Price"
           name="price"
           type="number"
           value={product.price}
@@ -70,7 +70,7 @@ const UpdateProduct = () => {
           required
         />
         <TextField
-          label="Descripción"
+          label="Description"
           name="description"
           value={product.description}
           onChange={handleChange}
@@ -79,7 +79,7 @@ const UpdateProduct = () => {
           required
         />
         <TextField
-          label="Categoría"
+          label="Category"
           name="category"
           value={product.category}
           onChange={handleChange}
@@ -88,7 +88,7 @@ const UpdateProduct = () => {
           required
         />
         <TextField
-          label="URL de Imagen"
+          label="Image URL"
           name="image_url"
           value={product.image_url}
           onChange={handleChange}
@@ -97,7 +97,7 @@ const UpdateProduct = () => {
           required
         />
         <Button type="submit" variant="contained" color="primary" fullWidth>
-          ACTUALIZAR PRODUCTO
+          UPDATE PRODUCT
         </Button>
       </form>
     </Container>
