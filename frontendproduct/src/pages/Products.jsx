@@ -7,10 +7,28 @@ const Products = () => {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:3001/api/products')
-      .then((response) => setProducts(response.data))
-      .catch((error) => console.error('Error fetching products:', error));
+    fetchProducts();
   }, []);
+
+  // Función para obtener productos
+  const fetchProducts = async () => {
+    try {
+      const response = await axios.get('http://localhost:3001/api/products');
+      setProducts(response.data);
+    } catch (error) {
+      console.error('Error fetching products:', error);
+    }
+  };
+
+  // Función para eliminar un producto
+  const deleteProduct = async (productId) => {
+    try {
+      await axios.delete(`http://localhost:3003/api/products/${productId}`);
+      setProducts(products.filter(product => product.id !== productId)); // Actualiza la lista de productos
+    } catch (error) {
+      console.error('Error deleting product:', error);
+    }
+  };
 
   return (
     <Container>
@@ -39,10 +57,21 @@ const Products = () => {
                   color="primary"
                   component={Link}
                   to={`/update-product/${product.id}`}
-                  style={{ marginTop: '10px' }}
+                  style={{ marginTop: '10px', marginRight: '5px' }}
                 >
                   Edit
                 </Button>
+
+                {/* Botón para eliminar el producto */}
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  onClick={() => deleteProduct(product.id)}
+                  style={{ marginTop: '10px' }}
+                >
+                  Delete
+                </Button>
+
               </CardContent>
             </Card>
           </Grid>
